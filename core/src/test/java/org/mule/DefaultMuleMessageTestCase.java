@@ -209,6 +209,19 @@ public class DefaultMuleMessageTestCase extends AbstractMuleContextTestCase
         assertInboundAndOutboundMessageProperties(copy);
         assertEquals(muleContext.getConfiguration().getDefaultEncoding(),
             copy.getOutboundProperty(MuleProperties.MULE_ENCODING_PROPERTY));
+        
+        // Mutate original
+        original.setProperty("FOO", "OTHER", PropertyScope.OUTBOUND);
+        assertNull(copy.getProperty("FOO", PropertyScope.OUTBOUND));
+        original.setProperty("FOO", "OTHER", PropertyScope.INBOUND);
+        assertNull(copy.getProperty("FOO", PropertyScope.INBOUND));
+
+        // Mutate copy
+        copy.setProperty("ABC", "OTHER", PropertyScope.OUTBOUND);
+        assertNull(original.getProperty("ABC", PropertyScope.OUTBOUND));
+        copy.setProperty("ABC", "OTHER", PropertyScope.INBOUND);
+        assertNull(original.getProperty("ABC", PropertyScope.INBOUND));
+
     }
 
     private void assertInboundAndOutboundMessageProperties(MuleMessage original)

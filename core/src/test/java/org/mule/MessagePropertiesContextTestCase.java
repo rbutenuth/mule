@@ -105,6 +105,14 @@ public class MessagePropertiesContextTestCase extends AbstractMuleContextTestCas
         assertNotSame(mpc.inboundMap, copy.inboundMap);
         assertNotSame(mpc.outboundMap, copy.outboundMap);
         doTest(copy);
+        
+        // Mutate original
+        mpc.setProperty("FOO", "OTHER", PropertyScope.OUTBOUND);
+        assertSame(copy.getProperty("FOO", PropertyScope.OUTBOUND), "BAR");
+
+        // Mutate copy
+        copy.setProperty("ABC", "OTHER", PropertyScope.OUTBOUND);
+        assertSame(mpc.getProperty("ABC", PropertyScope.OUTBOUND), "abc");
     }
 
     /*@Test

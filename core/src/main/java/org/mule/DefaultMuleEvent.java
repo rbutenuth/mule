@@ -1015,7 +1015,7 @@ public class DefaultMuleEvent implements MuleEvent, ThreadSafeAccess, Deserializ
         MuleMessage messageCopy = (MuleMessage) ((ThreadSafeAccess) event.getMessage()).newThreadCopy();
         DefaultMuleEvent eventCopy = new DefaultMuleEvent(messageCopy, event, new DefaultMuleSession(
             event.getSession()));
-        eventCopy.flowVariables = new CopyOnWriteCaseInsensitiveMap<String,Object>(((DefaultMuleEvent) event).flowVariables);
+        eventCopy.flowVariables = ((DefaultMuleEvent) event).flowVariables.clone();
         ((DefaultMuleMessage) messageCopy).setInvocationProperties(eventCopy.flowVariables);
         ((DefaultMuleMessage) messageCopy).resetAccessControl();
         return eventCopy;
